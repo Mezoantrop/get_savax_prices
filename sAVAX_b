@@ -1,0 +1,22 @@
+import requests
+from bs4 import BeautifulSoup
+
+def get_savax_price():
+    url = "https://staking.benqi.fi/stake"
+    headers = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/96.0.4664.93 Safari/537.36"}
+    response = requests.get(url, headers=headers)
+    if response.status_code == 200:
+        soup = BeautifulSoup(response.text, 'html.parser')
+        savax_price_element = soup.find("span", class_="text-green-400 text-3xl font-semibold")
+        if savax_price_element:
+            savax_price = savax_price_element.text.strip()
+            return savax_price
+    return None
+
+# Example usage:
+price = get_savax_price()
+if price:
+    print(f"sAVAX price: {price}")
+else:
+    print("Unable to fetch sAVAX price from Benqi.")
+# doesnot work need to get official API
